@@ -1,0 +1,1129 @@
+State 86 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 factor: IDENTIFIER
+    2       | INTEGER_CONSTANT
+    3       | STRING_LITERAL
+    4       | LEFT_PARENTHESIS expression RIGHT_PARENTHESIS
+    5       | IDENTIFIER LEFT_PARENTHESIS expression_list RIGHT_PARENTHESIS
+
+    6 term: factor
+    7     | term ASTERISK factor
+    8     | term SLASH factor
+
+    9 simple_expression: term
+   10                  | simple_expression PLUS term
+   11                  | simple_expression MINUS term
+
+   12 expression: simple_expression
+   13           | simple_expression LESS_THAN simple_expression
+   14           | simple_expression GREATER_THAN simple_expression
+   15           | simple_expression LESS_THAN_EQUAL simple_expression
+   16           | simple_expression GREATER_THAN_EQUAL simple_expression
+   17           | simple_expression EQUAL simple_expression
+   18           | simple_expression NOT_EQUAL simple_expression
+
+   19 expression_list: expression
+   20                | expression_list COMMA expression
+
+   21 statement: IDENTIFIER ASSIGNMENT expression
+   22          | compound_statement
+   23          | selection_statement
+   24          | iteration_statement
+
+   25 selection_statement: IF expression THEN statement
+   26                    | IF expression THEN statement ELSE statement
+
+   27 iteration_statement: WHILE expression DO statement
+
+   28 statement_list: statement
+   29               | statement_list SEMICOLON statement
+
+   30 compound_statement: EGIN statement_list END
+
+   31 parameter_list: variable_list COLON type
+   32               | parameter_list SEMICOLON variable_list COLON type
+
+   33 function_header: FUNCTION IDENTIFIER LEFT_PARENTHESIS parameter_list RIGHT_PARENTHESIS COLON type SEMICOLON
+
+   34 function_declaration: function_header declaration_list_opt compound_statement
+
+   35 function_declaration_list: function_declaration_list_opt function_declaration SEMICOLON
+
+   36 type: INTEGER
+   37     | STRING
+
+   38 variable_list: IDENTIFIER
+   39              | variable_list COMMA IDENTIFIER
+
+   40 declaration_list: declaration_list_opt VAR variable_list COLON type SEMICOLON
+
+   41 program: PROGRAM IDENTIFIER SEMICOLON declaration_list_opt function_declaration_list_opt compound_statement PERIOD
+
+   42 declaration_list_opt: declaration_list
+   43                     | /* empty */
+
+   44 function_declaration_list_opt: function_declaration_list
+   45                              | /* empty */
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+PROGRAM (258) 41
+FUNCTION (259) 33
+VAR (260) 40
+INTEGER (261) 36
+STRING (262) 37
+WHILE (263) 27
+DO (264) 27
+IF (265) 25 26
+THEN (266) 25 26
+ELSE (267) 26
+EGIN (268) 30
+END (269) 30
+IDENTIFIER (270) 1 5 21 33 38 39 41
+INTEGER_CONSTANT (271) 2
+STRING_LITERAL (272) 3
+LESS_THAN (273) 13
+GREATER_THAN (274) 14
+LESS_THAN_EQUAL (275) 15
+GREATER_THAN_EQUAL (276) 16
+EQUAL (277) 17
+NOT_EQUAL (278) 18
+ASSIGNMENT (279) 21
+LEFT_PARENTHESIS (280) 4 5 33
+RIGHT_PARENTHESIS (281) 4 5 33
+COMMA (282) 20 39
+SEMICOLON (283) 29 32 33 35 40 41
+PERIOD (284) 41
+COLON (285) 31 32 33 40
+PLUS (286) 10
+MINUS (287) 11
+ASTERISK (288) 7
+SLASH (289) 8
+
+
+Nonterminals, with rules where they appear
+
+$accept (35)
+    on left: 0
+factor (36)
+    on left: 1 2 3 4 5, on right: 6 7 8
+term (37)
+    on left: 6 7 8, on right: 7 8 9 10 11
+simple_expression (38)
+    on left: 9 10 11, on right: 10 11 12 13 14 15 16 17 18
+expression (39)
+    on left: 12 13 14 15 16 17 18, on right: 4 19 20 21 25 26 27
+expression_list (40)
+    on left: 19 20, on right: 5 20
+statement (41)
+    on left: 21 22 23 24, on right: 25 26 27 28 29
+selection_statement (42)
+    on left: 25 26, on right: 23
+iteration_statement (43)
+    on left: 27, on right: 24
+statement_list (44)
+    on left: 28 29, on right: 29 30
+compound_statement (45)
+    on left: 30, on right: 22 34 41
+parameter_list (46)
+    on left: 31 32, on right: 32 33
+function_header (47)
+    on left: 33, on right: 34
+function_declaration (48)
+    on left: 34, on right: 35
+function_declaration_list (49)
+    on left: 35, on right: 44
+type (50)
+    on left: 36 37, on right: 31 32 33 40
+variable_list (51)
+    on left: 38 39, on right: 31 32 39 40
+declaration_list (52)
+    on left: 40, on right: 42
+program (53)
+    on left: 41, on right: 0
+declaration_list_opt (54)
+    on left: 42 43, on right: 34 40 41
+function_declaration_list_opt (55)
+    on left: 44 45, on right: 35 41
+
+
+state 0
+
+    0 $accept: . program $end
+
+    PROGRAM  shift, and go to state 1
+
+    program  go to state 2
+
+
+state 1
+
+   41 program: PROGRAM . IDENTIFIER SEMICOLON declaration_list_opt function_declaration_list_opt compound_statement PERIOD
+
+    IDENTIFIER  shift, and go to state 3
+
+
+state 2
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 4
+
+
+state 3
+
+   41 program: PROGRAM IDENTIFIER . SEMICOLON declaration_list_opt function_declaration_list_opt compound_statement PERIOD
+
+    SEMICOLON  shift, and go to state 5
+
+
+state 4
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+state 5
+
+   41 program: PROGRAM IDENTIFIER SEMICOLON . declaration_list_opt function_declaration_list_opt compound_statement PERIOD
+
+    $default  reduce using rule 43 (declaration_list_opt)
+
+    declaration_list      go to state 6
+    declaration_list_opt  go to state 7
+
+
+state 6
+
+   42 declaration_list_opt: declaration_list .
+
+    $default  reduce using rule 42 (declaration_list_opt)
+
+
+state 7
+
+   40 declaration_list: declaration_list_opt . VAR variable_list COLON type SEMICOLON
+   41 program: PROGRAM IDENTIFIER SEMICOLON declaration_list_opt . function_declaration_list_opt compound_statement PERIOD
+
+    VAR  shift, and go to state 8
+
+    $default  reduce using rule 45 (function_declaration_list_opt)
+
+    function_declaration_list      go to state 9
+    function_declaration_list_opt  go to state 10
+
+
+state 8
+
+   40 declaration_list: declaration_list_opt VAR . variable_list COLON type SEMICOLON
+
+    IDENTIFIER  shift, and go to state 11
+
+    variable_list  go to state 12
+
+
+state 9
+
+   44 function_declaration_list_opt: function_declaration_list .
+
+    $default  reduce using rule 44 (function_declaration_list_opt)
+
+
+state 10
+
+   35 function_declaration_list: function_declaration_list_opt . function_declaration SEMICOLON
+   41 program: PROGRAM IDENTIFIER SEMICOLON declaration_list_opt function_declaration_list_opt . compound_statement PERIOD
+
+    FUNCTION  shift, and go to state 13
+    EGIN      shift, and go to state 14
+
+    compound_statement    go to state 15
+    function_header       go to state 16
+    function_declaration  go to state 17
+
+
+state 11
+
+   38 variable_list: IDENTIFIER .
+
+    $default  reduce using rule 38 (variable_list)
+
+
+state 12
+
+   39 variable_list: variable_list . COMMA IDENTIFIER
+   40 declaration_list: declaration_list_opt VAR variable_list . COLON type SEMICOLON
+
+    COMMA  shift, and go to state 18
+    COLON  shift, and go to state 19
+
+
+state 13
+
+   33 function_header: FUNCTION . IDENTIFIER LEFT_PARENTHESIS parameter_list RIGHT_PARENTHESIS COLON type SEMICOLON
+
+    IDENTIFIER  shift, and go to state 20
+
+
+state 14
+
+   30 compound_statement: EGIN . statement_list END
+
+    WHILE       shift, and go to state 21
+    IF          shift, and go to state 22
+    EGIN        shift, and go to state 14
+    IDENTIFIER  shift, and go to state 23
+
+    statement            go to state 24
+    selection_statement  go to state 25
+    iteration_statement  go to state 26
+    statement_list       go to state 27
+    compound_statement   go to state 28
+
+
+state 15
+
+   41 program: PROGRAM IDENTIFIER SEMICOLON declaration_list_opt function_declaration_list_opt compound_statement . PERIOD
+
+    PERIOD  shift, and go to state 29
+
+
+state 16
+
+   34 function_declaration: function_header . declaration_list_opt compound_statement
+
+    $default  reduce using rule 43 (declaration_list_opt)
+
+    declaration_list      go to state 6
+    declaration_list_opt  go to state 30
+
+
+state 17
+
+   35 function_declaration_list: function_declaration_list_opt function_declaration . SEMICOLON
+
+    SEMICOLON  shift, and go to state 31
+
+
+state 18
+
+   39 variable_list: variable_list COMMA . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 32
+
+
+state 19
+
+   40 declaration_list: declaration_list_opt VAR variable_list COLON . type SEMICOLON
+
+    INTEGER  shift, and go to state 33
+    STRING   shift, and go to state 34
+
+    type  go to state 35
+
+
+state 20
+
+   33 function_header: FUNCTION IDENTIFIER . LEFT_PARENTHESIS parameter_list RIGHT_PARENTHESIS COLON type SEMICOLON
+
+    LEFT_PARENTHESIS  shift, and go to state 36
+
+
+state 21
+
+   27 iteration_statement: WHILE . expression DO statement
+
+    IDENTIFIER        shift, and go to state 37
+    INTEGER_CONSTANT  shift, and go to state 38
+    STRING_LITERAL    shift, and go to state 39
+    LEFT_PARENTHESIS  shift, and go to state 40
+
+    factor             go to state 41
+    term               go to state 42
+    simple_expression  go to state 43
+    expression         go to state 44
+
+
+state 22
+
+   25 selection_statement: IF . expression THEN statement
+   26                    | IF . expression THEN statement ELSE statement
+
+    IDENTIFIER        shift, and go to state 37
+    INTEGER_CONSTANT  shift, and go to state 38
+    STRING_LITERAL    shift, and go to state 39
+    LEFT_PARENTHESIS  shift, and go to state 40
+
+    factor             go to state 41
+    term               go to state 42
+    simple_expression  go to state 43
+    expression         go to state 45
+
+
+state 23
+
+   21 statement: IDENTIFIER . ASSIGNMENT expression
+
+    ASSIGNMENT  shift, and go to state 46
+
+
+state 24
+
+   28 statement_list: statement .
+
+    $default  reduce using rule 28 (statement_list)
+
+
+state 25
+
+   23 statement: selection_statement .
+
+    $default  reduce using rule 23 (statement)
+
+
+state 26
+
+   24 statement: iteration_statement .
+
+    $default  reduce using rule 24 (statement)
+
+
+state 27
+
+   29 statement_list: statement_list . SEMICOLON statement
+   30 compound_statement: EGIN statement_list . END
+
+    END        shift, and go to state 47
+    SEMICOLON  shift, and go to state 48
+
+
+state 28
+
+   22 statement: compound_statement .
+
+    $default  reduce using rule 22 (statement)
+
+
+state 29
+
+   41 program: PROGRAM IDENTIFIER SEMICOLON declaration_list_opt function_declaration_list_opt compound_statement PERIOD .
+
+    $default  reduce using rule 41 (program)
+
+
+state 30
+
+   34 function_declaration: function_header declaration_list_opt . compound_statement
+   40 declaration_list: declaration_list_opt . VAR variable_list COLON type SEMICOLON
+
+    VAR   shift, and go to state 8
+    EGIN  shift, and go to state 14
+
+    compound_statement  go to state 49
+
+
+state 31
+
+   35 function_declaration_list: function_declaration_list_opt function_declaration SEMICOLON .
+
+    $default  reduce using rule 35 (function_declaration_list)
+
+
+state 32
+
+   39 variable_list: variable_list COMMA IDENTIFIER .
+
+    $default  reduce using rule 39 (variable_list)
+
+
+state 33
+
+   36 type: INTEGER .
+
+    $default  reduce using rule 36 (type)
+
+
+state 34
+
+   37 type: STRING .
+
+    $default  reduce using rule 37 (type)
+
+
+state 35
+
+   40 declaration_list: declaration_list_opt VAR variable_list COLON type . SEMICOLON
+
+    SEMICOLON  shift, and go to state 50
+
+
+state 36
+
+   33 function_header: FUNCTION IDENTIFIER LEFT_PARENTHESIS . parameter_list RIGHT_PARENTHESIS COLON type SEMICOLON
+
+    IDENTIFIER  shift, and go to state 11
+
+    parameter_list  go to state 51
+    variable_list   go to state 52
+
+
+state 37
+
+    1 factor: IDENTIFIER .
+    5       | IDENTIFIER . LEFT_PARENTHESIS expression_list RIGHT_PARENTHESIS
+
+    LEFT_PARENTHESIS  shift, and go to state 53
+
+    $default  reduce using rule 1 (factor)
+
+
+state 38
+
+    2 factor: INTEGER_CONSTANT .
+
+    $default  reduce using rule 2 (factor)
+
+
+state 39
+
+    3 factor: STRING_LITERAL .
+
+    $default  reduce using rule 3 (factor)
+
+
+state 40
+
+    4 factor: LEFT_PARENTHESIS . expression RIGHT_PARENTHESIS
+
+    IDENTIFIER        shift, and go to state 37
+    INTEGER_CONSTANT  shift, and go to state 38
+    STRING_LITERAL    shift, and go to state 39
+    LEFT_PARENTHESIS  shift, and go to state 40
+
+    factor             go to state 41
+    term               go to state 42
+    simple_expression  go to state 43
+    expression         go to state 54
+
+
+state 41
+
+    6 term: factor .
+
+    $default  reduce using rule 6 (term)
+
+
+state 42
+
+    7 term: term . ASTERISK factor
+    8     | term . SLASH factor
+    9 simple_expression: term .
+
+    ASTERISK  shift, and go to state 55
+    SLASH     shift, and go to state 56
+
+    $default  reduce using rule 9 (simple_expression)
+
+
+state 43
+
+   10 simple_expression: simple_expression . PLUS term
+   11                  | simple_expression . MINUS term
+   12 expression: simple_expression .
+   13           | simple_expression . LESS_THAN simple_expression
+   14           | simple_expression . GREATER_THAN simple_expression
+   15           | simple_expression . LESS_THAN_EQUAL simple_expression
+   16           | simple_expression . GREATER_THAN_EQUAL simple_expression
+   17           | simple_expression . EQUAL simple_expression
+   18           | simple_expression . NOT_EQUAL simple_expression
+
+    LESS_THAN           shift, and go to state 57
+    GREATER_THAN        shift, and go to state 58
+    LESS_THAN_EQUAL     shift, and go to state 59
+    GREATER_THAN_EQUAL  shift, and go to state 60
+    EQUAL               shift, and go to state 61
+    NOT_EQUAL           shift, and go to state 62
+    PLUS                shift, and go to state 63
+    MINUS               shift, and go to state 64
+
+    $default  reduce using rule 12 (expression)
+
+
+state 44
+
+   27 iteration_statement: WHILE expression . DO statement
+
+    DO  shift, and go to state 65
+
+
+state 45
+
+   25 selection_statement: IF expression . THEN statement
+   26                    | IF expression . THEN statement ELSE statement
+
+    THEN  shift, and go to state 66
+
+
+state 46
+
+   21 statement: IDENTIFIER ASSIGNMENT . expression
+
+    IDENTIFIER        shift, and go to state 37
+    INTEGER_CONSTANT  shift, and go to state 38
+    STRING_LITERAL    shift, and go to state 39
+    LEFT_PARENTHESIS  shift, and go to state 40
+
+    factor             go to state 41
+    term               go to state 42
+    simple_expression  go to state 43
+    expression         go to state 67
+
+
+state 47
+
+   30 compound_statement: EGIN statement_list END .
+
+    $default  reduce using rule 30 (compound_statement)
+
+
+state 48
+
+   29 statement_list: statement_list SEMICOLON . statement
+
+    WHILE       shift, and go to state 21
+    IF          shift, and go to state 22
+    EGIN        shift, and go to state 14
+    IDENTIFIER  shift, and go to state 23
+
+    statement            go to state 68
+    selection_statement  go to state 25
+    iteration_statement  go to state 26
+    compound_statement   go to state 28
+
+
+state 49
+
+   34 function_declaration: function_header declaration_list_opt compound_statement .
+
+    $default  reduce using rule 34 (function_declaration)
+
+
+state 50
+
+   40 declaration_list: declaration_list_opt VAR variable_list COLON type SEMICOLON .
+
+    $default  reduce using rule 40 (declaration_list)
+
+
+state 51
+
+   32 parameter_list: parameter_list . SEMICOLON variable_list COLON type
+   33 function_header: FUNCTION IDENTIFIER LEFT_PARENTHESIS parameter_list . RIGHT_PARENTHESIS COLON type SEMICOLON
+
+    RIGHT_PARENTHESIS  shift, and go to state 69
+    SEMICOLON          shift, and go to state 70
+
+
+state 52
+
+   31 parameter_list: variable_list . COLON type
+   39 variable_list: variable_list . COMMA IDENTIFIER
+
+    COMMA  shift, and go to state 18
+    COLON  shift, and go to state 71
+
+
+state 53
+
+    5 factor: IDENTIFIER LEFT_PARENTHESIS . expression_list RIGHT_PARENTHESIS
+
+    IDENTIFIER        shift, and go to state 37
+    INTEGER_CONSTANT  shift, and go to state 38
+    STRING_LITERAL    shift, and go to state 39
+    LEFT_PARENTHESIS  shift, and go to state 40
+
+    factor             go to state 41
+    term               go to state 42
+    simple_expression  go to state 43
+    expression         go to state 72
+    expression_list    go to state 73
+
+
+state 54
+
+    4 factor: LEFT_PARENTHESIS expression . RIGHT_PARENTHESIS
+
+    RIGHT_PARENTHESIS  shift, and go to state 74
+
+
+state 55
+
+    7 term: term ASTERISK . factor
+
+    IDENTIFIER        shift, and go to state 37
+    INTEGER_CONSTANT  shift, and go to state 38
+    STRING_LITERAL    shift, and go to state 39
+    LEFT_PARENTHESIS  shift, and go to state 40
+
+    factor  go to state 75
+
+
+state 56
+
+    8 term: term SLASH . factor
+
+    IDENTIFIER        shift, and go to state 37
+    INTEGER_CONSTANT  shift, and go to state 38
+    STRING_LITERAL    shift, and go to state 39
+    LEFT_PARENTHESIS  shift, and go to state 40
+
+    factor  go to state 76
+
+
+state 57
+
+   13 expression: simple_expression LESS_THAN . simple_expression
+
+    IDENTIFIER        shift, and go to state 37
+    INTEGER_CONSTANT  shift, and go to state 38
+    STRING_LITERAL    shift, and go to state 39
+    LEFT_PARENTHESIS  shift, and go to state 40
+
+    factor             go to state 41
+    term               go to state 42
+    simple_expression  go to state 77
+
+
+state 58
+
+   14 expression: simple_expression GREATER_THAN . simple_expression
+
+    IDENTIFIER        shift, and go to state 37
+    INTEGER_CONSTANT  shift, and go to state 38
+    STRING_LITERAL    shift, and go to state 39
+    LEFT_PARENTHESIS  shift, and go to state 40
+
+    factor             go to state 41
+    term               go to state 42
+    simple_expression  go to state 78
+
+
+state 59
+
+   15 expression: simple_expression LESS_THAN_EQUAL . simple_expression
+
+    IDENTIFIER        shift, and go to state 37
+    INTEGER_CONSTANT  shift, and go to state 38
+    STRING_LITERAL    shift, and go to state 39
+    LEFT_PARENTHESIS  shift, and go to state 40
+
+    factor             go to state 41
+    term               go to state 42
+    simple_expression  go to state 79
+
+
+state 60
+
+   16 expression: simple_expression GREATER_THAN_EQUAL . simple_expression
+
+    IDENTIFIER        shift, and go to state 37
+    INTEGER_CONSTANT  shift, and go to state 38
+    STRING_LITERAL    shift, and go to state 39
+    LEFT_PARENTHESIS  shift, and go to state 40
+
+    factor             go to state 41
+    term               go to state 42
+    simple_expression  go to state 80
+
+
+state 61
+
+   17 expression: simple_expression EQUAL . simple_expression
+
+    IDENTIFIER        shift, and go to state 37
+    INTEGER_CONSTANT  shift, and go to state 38
+    STRING_LITERAL    shift, and go to state 39
+    LEFT_PARENTHESIS  shift, and go to state 40
+
+    factor             go to state 41
+    term               go to state 42
+    simple_expression  go to state 81
+
+
+state 62
+
+   18 expression: simple_expression NOT_EQUAL . simple_expression
+
+    IDENTIFIER        shift, and go to state 37
+    INTEGER_CONSTANT  shift, and go to state 38
+    STRING_LITERAL    shift, and go to state 39
+    LEFT_PARENTHESIS  shift, and go to state 40
+
+    factor             go to state 41
+    term               go to state 42
+    simple_expression  go to state 82
+
+
+state 63
+
+   10 simple_expression: simple_expression PLUS . term
+
+    IDENTIFIER        shift, and go to state 37
+    INTEGER_CONSTANT  shift, and go to state 38
+    STRING_LITERAL    shift, and go to state 39
+    LEFT_PARENTHESIS  shift, and go to state 40
+
+    factor  go to state 41
+    term    go to state 83
+
+
+state 64
+
+   11 simple_expression: simple_expression MINUS . term
+
+    IDENTIFIER        shift, and go to state 37
+    INTEGER_CONSTANT  shift, and go to state 38
+    STRING_LITERAL    shift, and go to state 39
+    LEFT_PARENTHESIS  shift, and go to state 40
+
+    factor  go to state 41
+    term    go to state 84
+
+
+state 65
+
+   27 iteration_statement: WHILE expression DO . statement
+
+    WHILE       shift, and go to state 21
+    IF          shift, and go to state 22
+    EGIN        shift, and go to state 14
+    IDENTIFIER  shift, and go to state 23
+
+    statement            go to state 85
+    selection_statement  go to state 25
+    iteration_statement  go to state 26
+    compound_statement   go to state 28
+
+
+state 66
+
+   25 selection_statement: IF expression THEN . statement
+   26                    | IF expression THEN . statement ELSE statement
+
+    WHILE       shift, and go to state 21
+    IF          shift, and go to state 22
+    EGIN        shift, and go to state 14
+    IDENTIFIER  shift, and go to state 23
+
+    statement            go to state 86
+    selection_statement  go to state 25
+    iteration_statement  go to state 26
+    compound_statement   go to state 28
+
+
+state 67
+
+   21 statement: IDENTIFIER ASSIGNMENT expression .
+
+    $default  reduce using rule 21 (statement)
+
+
+state 68
+
+   29 statement_list: statement_list SEMICOLON statement .
+
+    $default  reduce using rule 29 (statement_list)
+
+
+state 69
+
+   33 function_header: FUNCTION IDENTIFIER LEFT_PARENTHESIS parameter_list RIGHT_PARENTHESIS . COLON type SEMICOLON
+
+    COLON  shift, and go to state 87
+
+
+state 70
+
+   32 parameter_list: parameter_list SEMICOLON . variable_list COLON type
+
+    IDENTIFIER  shift, and go to state 11
+
+    variable_list  go to state 88
+
+
+state 71
+
+   31 parameter_list: variable_list COLON . type
+
+    INTEGER  shift, and go to state 33
+    STRING   shift, and go to state 34
+
+    type  go to state 89
+
+
+state 72
+
+   19 expression_list: expression .
+
+    $default  reduce using rule 19 (expression_list)
+
+
+state 73
+
+    5 factor: IDENTIFIER LEFT_PARENTHESIS expression_list . RIGHT_PARENTHESIS
+   20 expression_list: expression_list . COMMA expression
+
+    RIGHT_PARENTHESIS  shift, and go to state 90
+    COMMA              shift, and go to state 91
+
+
+state 74
+
+    4 factor: LEFT_PARENTHESIS expression RIGHT_PARENTHESIS .
+
+    $default  reduce using rule 4 (factor)
+
+
+state 75
+
+    7 term: term ASTERISK factor .
+
+    $default  reduce using rule 7 (term)
+
+
+state 76
+
+    8 term: term SLASH factor .
+
+    $default  reduce using rule 8 (term)
+
+
+state 77
+
+   10 simple_expression: simple_expression . PLUS term
+   11                  | simple_expression . MINUS term
+   13 expression: simple_expression LESS_THAN simple_expression .
+
+    PLUS   shift, and go to state 63
+    MINUS  shift, and go to state 64
+
+    $default  reduce using rule 13 (expression)
+
+
+state 78
+
+   10 simple_expression: simple_expression . PLUS term
+   11                  | simple_expression . MINUS term
+   14 expression: simple_expression GREATER_THAN simple_expression .
+
+    PLUS   shift, and go to state 63
+    MINUS  shift, and go to state 64
+
+    $default  reduce using rule 14 (expression)
+
+
+state 79
+
+   10 simple_expression: simple_expression . PLUS term
+   11                  | simple_expression . MINUS term
+   15 expression: simple_expression LESS_THAN_EQUAL simple_expression .
+
+    PLUS   shift, and go to state 63
+    MINUS  shift, and go to state 64
+
+    $default  reduce using rule 15 (expression)
+
+
+state 80
+
+   10 simple_expression: simple_expression . PLUS term
+   11                  | simple_expression . MINUS term
+   16 expression: simple_expression GREATER_THAN_EQUAL simple_expression .
+
+    PLUS   shift, and go to state 63
+    MINUS  shift, and go to state 64
+
+    $default  reduce using rule 16 (expression)
+
+
+state 81
+
+   10 simple_expression: simple_expression . PLUS term
+   11                  | simple_expression . MINUS term
+   17 expression: simple_expression EQUAL simple_expression .
+
+    PLUS   shift, and go to state 63
+    MINUS  shift, and go to state 64
+
+    $default  reduce using rule 17 (expression)
+
+
+state 82
+
+   10 simple_expression: simple_expression . PLUS term
+   11                  | simple_expression . MINUS term
+   18 expression: simple_expression NOT_EQUAL simple_expression .
+
+    PLUS   shift, and go to state 63
+    MINUS  shift, and go to state 64
+
+    $default  reduce using rule 18 (expression)
+
+
+state 83
+
+    7 term: term . ASTERISK factor
+    8     | term . SLASH factor
+   10 simple_expression: simple_expression PLUS term .
+
+    ASTERISK  shift, and go to state 55
+    SLASH     shift, and go to state 56
+
+    $default  reduce using rule 10 (simple_expression)
+
+
+state 84
+
+    7 term: term . ASTERISK factor
+    8     | term . SLASH factor
+   11 simple_expression: simple_expression MINUS term .
+
+    ASTERISK  shift, and go to state 55
+    SLASH     shift, and go to state 56
+
+    $default  reduce using rule 11 (simple_expression)
+
+
+state 85
+
+   27 iteration_statement: WHILE expression DO statement .
+
+    $default  reduce using rule 27 (iteration_statement)
+
+
+state 86
+
+   25 selection_statement: IF expression THEN statement .
+   26                    | IF expression THEN statement . ELSE statement
+
+    ELSE  shift, and go to state 92
+
+    ELSE      [reduce using rule 25 (selection_statement)]
+    $default  reduce using rule 25 (selection_statement)
+
+
+state 87
+
+   33 function_header: FUNCTION IDENTIFIER LEFT_PARENTHESIS parameter_list RIGHT_PARENTHESIS COLON . type SEMICOLON
+
+    INTEGER  shift, and go to state 33
+    STRING   shift, and go to state 34
+
+    type  go to state 93
+
+
+state 88
+
+   32 parameter_list: parameter_list SEMICOLON variable_list . COLON type
+   39 variable_list: variable_list . COMMA IDENTIFIER
+
+    COMMA  shift, and go to state 18
+    COLON  shift, and go to state 94
+
+
+state 89
+
+   31 parameter_list: variable_list COLON type .
+
+    $default  reduce using rule 31 (parameter_list)
+
+
+state 90
+
+    5 factor: IDENTIFIER LEFT_PARENTHESIS expression_list RIGHT_PARENTHESIS .
+
+    $default  reduce using rule 5 (factor)
+
+
+state 91
+
+   20 expression_list: expression_list COMMA . expression
+
+    IDENTIFIER        shift, and go to state 37
+    INTEGER_CONSTANT  shift, and go to state 38
+    STRING_LITERAL    shift, and go to state 39
+    LEFT_PARENTHESIS  shift, and go to state 40
+
+    factor             go to state 41
+    term               go to state 42
+    simple_expression  go to state 43
+    expression         go to state 95
+
+
+state 92
+
+   26 selection_statement: IF expression THEN statement ELSE . statement
+
+    WHILE       shift, and go to state 21
+    IF          shift, and go to state 22
+    EGIN        shift, and go to state 14
+    IDENTIFIER  shift, and go to state 23
+
+    statement            go to state 96
+    selection_statement  go to state 25
+    iteration_statement  go to state 26
+    compound_statement   go to state 28
+
+
+state 93
+
+   33 function_header: FUNCTION IDENTIFIER LEFT_PARENTHESIS parameter_list RIGHT_PARENTHESIS COLON type . SEMICOLON
+
+    SEMICOLON  shift, and go to state 97
+
+
+state 94
+
+   32 parameter_list: parameter_list SEMICOLON variable_list COLON . type
+
+    INTEGER  shift, and go to state 33
+    STRING   shift, and go to state 34
+
+    type  go to state 98
+
+
+state 95
+
+   20 expression_list: expression_list COMMA expression .
+
+    $default  reduce using rule 20 (expression_list)
+
+
+state 96
+
+   26 selection_statement: IF expression THEN statement ELSE statement .
+
+    $default  reduce using rule 26 (selection_statement)
+
+
+state 97
+
+   33 function_header: FUNCTION IDENTIFIER LEFT_PARENTHESIS parameter_list RIGHT_PARENTHESIS COLON type SEMICOLON .
+
+    $default  reduce using rule 33 (function_header)
+
+
+state 98
+
+   32 parameter_list: parameter_list SEMICOLON variable_list COLON type .
+
+    $default  reduce using rule 32 (parameter_list)

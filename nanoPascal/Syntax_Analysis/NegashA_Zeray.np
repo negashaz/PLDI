@@ -1,0 +1,16 @@
+PROGRAM iterfactorial;
+
+VAR n: INTEGER;
+VAR i, r: INTEGER;
+
+BEGIN
+    i := 1;
+    r := 1;
+    readln(n);
+    WHILE i<= n DO
+    BEGIN
+        r := r * i;
+        i := i + 1;
+    END;
+    writeln(n, '!=', r)
+END.
